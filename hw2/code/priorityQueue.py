@@ -20,23 +20,57 @@ class PriorityQueue:
         self.minHeapSorted = None
         self.minHeapSort()
 
+    # Returns min
     @property
     def min(self):
         return self.minHeap[0]
-
+    # Returns max
     @property
     def max(self):
         return self.maxHeap[0]
 
+    # Inserts and bubbles up for min and max
     def insert(self, val):
+        # Increase heapsize and append value
         self.A.append(val)
-        self.minHeap.append(val)
         self.maxHeap.append(val)
-        self.buildMinHeap(self.minHeap)
-        self.buildMaxHeap(self.maxHeap)
-        self.minHeapSort()
-        self.maxHeapSort()
+        self.minHeap.append(val)
 
+        # Gets size and info to find parent
+        A = self.maxHeap
+        n = len(A)
+        i = n-1
+
+        # Gets parent and bubbles it up
+        p = self.parent(i)
+        while i > 0 and A[p] < A[i]:
+            self.swap(A, i, p)
+            i = p
+            p = self.parent(i)
+
+        # Min heap insert
+        A = self.minHeap
+        n = len(A)
+        i = n-1
+        p = self.parent(i)
+        while i > 0 and A[p] > A[i]:
+            self.swap(A, i, p)
+            i = p
+            p = self.parent(i)
+
+    # Finds parent in array
+    def parent(self, i):
+        # Even or odd
+        if i % 2 == 0:
+            lr = 2
+        else:
+            lr = 1
+
+        # Returns parent index
+        return (i-lr)//2
+
+
+    # Max heap sort
     def maxHeapSort(self):
         A = self.maxHeapSorted = [f for f in self.A]
         # Builds max heap
@@ -49,6 +83,7 @@ class PriorityQueue:
             n -= 1
             self.maxHeapify(A, 0, n)
 
+    # Min heap sort
     def minHeapSort(self):
         A = self.minHeapSorted = [f for f in self.A]
         # Builds max heap
@@ -61,16 +96,19 @@ class PriorityQueue:
             n -= 1
             self.minHeapify(A, 0, n)
 
+    # Builds max heap
     def buildMaxHeap(self, A):
         n = len(A)
         for i in range(n//2, -1, -1):
             self.maxHeapify(A, i, n)
 
+    # Builds min heap
     def buildMinHeap(self, A):
         n = len(A)
         for i in range(n//2, -1, -1):
             self.minHeapify(A, i, n)
 
+    # Max Heapify
     def maxHeapify(self, A, i, n):
         # Sets left, right, largest
         l = 2*i + 1
@@ -89,6 +127,7 @@ class PriorityQueue:
             self.swap(A, i, largest)
             self.maxHeapify(A, largest, n)
 
+    # Min Heapify
     def minHeapify(self, A, i, n):
         # Sets left, right, smallest
         l = 2*i + 1
@@ -107,11 +146,13 @@ class PriorityQueue:
             self.swap(A, i, smallest)
             self.minHeapify(A, smallest, n)
 
+    # Swaps indices a and b in A
     def swap(self, A, a, b):
         temp = A[a]
         A[a] = A[b]
         A[b] = temp
 
+    # For printing
     def __str__(self):
         a = ', '.join([str(f) for f in self.A]) + ' :Original' + '\n'
         maxHeap = ', '.join([str(f) for f in self.maxHeap]) + ' :Max Heap' + '\n'
@@ -140,11 +181,20 @@ def main():
 
     # Inserts new values
     pqa.insert(69)
+    pqa.maxHeapSort()
+    pqa.minHeapSort()
     pqb.insert(69)
+    pqb.maxHeapSort()
+    pqb.minHeapSort()
 
     # Prints again
     print(pqa)
     print(pqb)
+
+    # Prints min/max
+    print('min/max = {}/{}'.format(pqa.min, pqa.max))
+    print('min/max = {}/{}'.format(pqb.min, pqb.max))
+    print()
 
 if __name__ == '__main__':
     main()
