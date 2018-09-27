@@ -21,26 +21,55 @@ def buildMaxHeap(A):
         maxHeapify(A, i, n)
     print(A)
 
+# def maxHeapify(A, i, n):
+#     global swapCount
+#     # Sets left, right, largest
+#     l = 2*i + 1
+#     r = l + 1
+#     largest = i
+
+#     # Finds largest
+#     if l < n and A[largest] < A[l]:
+#         largest = l
+
+#     if r < n and A[largest] < A[r]:
+#         largest = r
+
+#     # If i isnt largest
+#     if largest != i:
+#         swap(A, i, largest)
+#         swapCount += 1
+#         print(A)
+#         maxHeapify(A, largest, n)
+
 def maxHeapify(A, i, n):
     global swapCount
-    # Sets left, right, largest
-    l = 2*i + 1
-    r = l + 1
-    largest = i
+    
+    flag = True
+    while flag:
+        # Sets left, right, largest
+        l = 2*i + 1
+        r = l + 1
+        largest = i
 
-    # Finds largest
-    if l < n and A[largest] < A[l]:
-        largest = l
+        # Finds largest
+        if l < n and A[largest] < A[l]:
+            largest = l
 
-    if r < n and A[largest] < A[r]:
-        largest = r
+        if r < n and A[largest] < A[r]:
+            largest = r
 
-    # If i isnt largest
-    if largest != i:
-        swap(A, i, largest)
-        swapCount += 1
-        print(A)
-        maxHeapify(A, largest, n)
+        # If i isnt largest
+        if largest != i:
+            swap(A, i, largest)
+            swapCount += 1
+            print(A)
+            # maxHeapify(A, largest, n)
+            i = largest
+
+        else:
+            flag = False
+
 
 def swap(A, i, largest):
     t = A[i]
@@ -61,6 +90,9 @@ def main():
     heapSort(B)
     print('swapCount = {}\n'.format(swapCount))
     swapCount = 0
+
+    print(A)
+    print(B)
 
 if __name__ == '__main__':
     main()
